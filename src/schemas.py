@@ -22,3 +22,20 @@ class ContactsResponse(ContactsModel):
     id: int
 
     model_config = ConfigDict(from_attributes=True)
+
+class UpdateUser(BaseModel):
+    username: str = Field(None, max_length=50, min_length=2, description="User name")
+    email: EmailStr = Field(None, max_length=50, description="User email")
+    hashed_password: str = Field(None, max_length=50, description="User password")
+    avatar: str =  Field(None, description="User avatar")
+
+    model_config = ConfigDict(from_attributes=True)
+
+class CreateUser(UpdateUser):
+    username: str = Field(..., max_length=50, min_length=2, description="User name")
+    email: EmailStr = Field(..., max_length=50, description="User email")
+    hashed_password: str = Field(..., max_length=50, description="User password")
+
+class Token(BaseModel):
+    access_token: str = Field(..., description="Access token")
+    token_type: str = Field(..., description="Token type")
