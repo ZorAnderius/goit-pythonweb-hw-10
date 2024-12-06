@@ -39,10 +39,6 @@ class UserResponse(UpdateUser):
 
     model_config = ConfigDict(from_attributes=True)
 
-class LoginForm(BaseModel):
-    username: str = Field(..., description="User name")
-    password: str = Field(..., description="User password")
-
 class Token(BaseModel):
     access_token: str = Field(..., description="Access token")
     token_type: str = Field(..., description="Token type")
