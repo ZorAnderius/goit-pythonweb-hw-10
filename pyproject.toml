@@ -13,6 +13,8 @@ sqlalchemy = "^2.0.36"
 alembic = "^1.14.0"
 fastapi = {extras = ["standard"], version = "^0.115.5"}
 unicorn = { extras = ["standard"], version = "^2.1.1" }
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 
 
 [build-system]
