@@ -36,6 +36,9 @@ class CreateUser(UpdateUser):
     email: EmailStr = Field(..., max_length=50, description="User email")
     hashed_password: str = Field(..., max_length=50, description="User password")
 
+class ValidateUserEmail(BaseModel):
+    email: EmailStr = Field(..., max_length=50, description="User email")
+
 class Token(BaseModel):
     access_token: str = Field(..., description="Access token")
     token_type: str = Field(..., description="Token type")
