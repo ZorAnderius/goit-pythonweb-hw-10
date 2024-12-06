@@ -658,6 +658,17 @@ MarkupSafe = ">=2.0"
 i18n = ["Babel (>=2.7)"]
 
 [[package]]
+name = "libgravatar"
+version = "1.0.4"
+description = "A library that provides a Python 3 interface for the Gravatar API."
+optional = false
+python-versions = "*"
+files = [
+    {file = "libgravatar-1.0.4-py2.py3-none-any.whl", hash = "sha256:f967619b38914e0f941e53387881005e43929814571103f6bbfa2afd75045e20"},
+    {file = "libgravatar-1.0.4.tar.gz", hash = "sha256:05cf4f8dfefe995d09078cd3d747c8f04dcf17d6004fc7bb542049a55f2238d9"},
+]
+
+[[package]]
 name = "mako"
 version = "1.3.7"
 description = "A super-fast templating language that borrows the best ideas from the existing templating languages."
@@ -1559,4 +1570,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "82018213f85bce618e637b76588ee649b73efe8dbaa2375f174ceaf91970962e"
+content-hash = "7f4e77d3ff2a5b6cf3728eb1a6ac0f0c1c0d3e4903df99c3b0a70ef96fe83b47"
