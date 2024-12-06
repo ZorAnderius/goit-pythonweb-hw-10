@@ -26,18 +26,22 @@ class ContactsResponse(ContactsModel):
 class UpdateUser(BaseModel):
     username: str = Field(None, max_length=50, min_length=2, description="User name")
     email: EmailStr = Field(None, max_length=50, description="User email")
-    hashed_password: str = Field(None, max_length=50, description="User password")
     avatar: str =  Field(None, description="User avatar")
 
-    model_config = ConfigDict(from_attributes=True)
 
 class CreateUser(UpdateUser):
     username: str = Field(..., max_length=50, min_length=2, description="User name")
     email: EmailStr = Field(..., max_length=50, description="User email")
-    hashed_password: str = Field(..., max_length=50, description="User password")
+    password: str = Field(..., max_length=50, description="User password")
 
-class ValidateUserEmail(BaseModel):
-    email: EmailStr = Field(..., max_length=50, description="User email")
+class UserResponse(UpdateUser):
+    id: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+class LoginForm(BaseModel):
+    username: str = Field(..., description="User name")
+    password: str = Field(..., description="User password")
 
 class Token(BaseModel):
     access_token: str = Field(..., description="Access token")

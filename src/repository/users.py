@@ -1,8 +1,9 @@
+from pydantic import EmailStr
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.models import User
-from src.schemas import CreateUser, ValidateUserEmail
+from src.schemas import CreateUser
 
 
 class UsersRepository:
@@ -19,7 +20,7 @@ class UsersRepository:
         user = await self.session.execute(query)
         return user.scalar_one_or_none()
 
-    async def get_user_by_email(self, email: ValidateUserEmail) -> User | None:
+    async def get_user_by_email(self, email: EmailStr | str) -> User | None:
         query = select(User).filter_by(email=email)
         user = await self.session.execute(query)
         return user.scalar_one_or_none()
@@ -27,7 +28,7 @@ class UsersRepository:
     async def create_user(self, body: CreateUser, avatar: str = None) -> User:
         user = User(
             **body.model_dump(exclude_unset=True, exclude={'password'}),
-            hashed_password=body.hashed_password,
+            hashed_password=body.password,
             avatar=avatar
         )
         self.session.add(user)
