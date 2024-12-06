@@ -7,7 +7,7 @@ from jose import jwt, JWTError
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from src.conf.config import config
+from src.conf.config import settings
 from src.database.db import get_db
 from src.database.models import User
 from src.services.users import UserService
@@ -29,10 +29,10 @@ async def create_access_token(data: dict, expires_delta: Optional[int] = None) -
     if expires_delta:
         expire = datetime.now(UTC) + timedelta(seconds=expires_delta)
     else:
-        expire_minutes = int(config.JWT_EXPIRATION_TIME)
+        expire_minutes = int(settings.JWT_EXPIRATION_TIME)
         expire = datetime.now(UTC) + timedelta(minutes=expire_minutes)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, config.JWT_SECRET_KEY, algorithm=config.JWT_ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
     return encoded_jwt
 
 async def get_current_user(token: str = Depends(oauth2_scheme),
@@ -45,8 +45,8 @@ async def get_current_user(token: str = Depends(oauth2_scheme),
 
     try:
         payload = jwt.decode(token,
-                             config.JWT_SECRET_KEY,
-                             algorithms=[config.JWT_ALGORITHM])
+                             settings.JWT_SECRET_KEY,
+                             algorithms=[settings.JWT_ALGORITHM])
         username = payload.get("sub")
         if username is None:
             raise credentials_exception

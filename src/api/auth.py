@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.db import get_db
 from src.database.models import User
-from src.schemas import CreateUser, UserResponse, Token, LoginForm
+from src.schemas import CreateUser, UserResponse, Token
 from src.services.auth import Hash, create_access_token
 from src.services.users import UserService
 
@@ -34,7 +34,7 @@ async def register_user(user_data: CreateUser,
              response_model=Token,
              response_description="Login user",
              status_code=status.HTTP_200_OK)
-async def login_user(form_data: LoginForm = Depends(),
+async def login_user(form_data: OAuth2PasswordRequestForm = Depends(),
                      db: AsyncSession = Depends(get_db)) -> dict:
     user_service = UserService(db)
     user = await user_service.get_user_by_username(form_data.username)
