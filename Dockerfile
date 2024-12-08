@@ -5,14 +5,13 @@ WORKDIR /app
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
-
-RUN apt-get update && apt-get install -y dos2unix
+RUN apt-get update && apt-get install -y postgresql-client
 
 COPY . /app
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["bash", "./entrypoint.sh"]
 
 EXPOSE 8000

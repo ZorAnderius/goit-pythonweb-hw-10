@@ -29,7 +29,7 @@ class UpdateUser(BaseModel):
     avatar: str =  Field(None, description="User avatar")
 
 
-class CreateUser(UpdateUser):
+class CreateUser(BaseModel):
     username: str = Field(..., max_length=50, min_length=2, description="User name")
     email: EmailStr = Field(..., max_length=50, description="User email")
     password: str = Field(..., max_length=50, description="User password")
