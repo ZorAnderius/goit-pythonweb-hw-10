@@ -30,7 +30,7 @@ async def create_access_token(data: dict, expires_delta: Optional[int] = None) -
         expire = datetime.now(UTC) + timedelta(seconds=expires_delta)
     else:
         expire_minutes = int(settings.JWT_EXPIRATION_TIME)
-        expire = datetime.now(UTC) + timedelta(minutes=expire_minutes)
+        expire = datetime.now(UTC) + timedelta(seconds=expire_minutes)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
     return encoded_jwt
@@ -58,3 +58,23 @@ async def get_current_user(token: str = Depends(oauth2_scheme),
     if user is None:
         raise credentials_exception
     return user
+
+def create_email_token(data: dict) -> str:
+    to_encode = data.copy()
+    expire = datetime.now(UTC) + timedelta(days=7)
+    to_encode.update({"iat": datetime.now(UTC), "exp": expire})
+    token = jwt.encode(to_encode, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
+    return token
+
+async def get_email_from_token(token: str) -> str:
+    try:
+        payload = jwt.decode(
+            token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM]
+        )
+        email = payload["sub"]
+        return email
+    except JWTError as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Invalid token",
+        )

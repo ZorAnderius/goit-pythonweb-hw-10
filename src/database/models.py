@@ -3,7 +3,7 @@ from sqlalchemy.orm import DeclarativeBase, relationship
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import Integer, String, DateTime, Date, func, ForeignKey
+from sqlalchemy import Integer, String, DateTime, Date, func, ForeignKey, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 
 class Base(DeclarativeBase):
@@ -41,3 +41,4 @@ class User(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, default=func.now(), onupdate=func.now()
     )
+    confirmed: Mapped[bool] = mapped_column(Boolean, default=False)

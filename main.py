@@ -1,5 +1,5 @@
 from typing import Callable
-from ipaddress import ip_address
+from ipaddress import ip_address, ip_network
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi.errors import RateLimitExceeded
@@ -21,12 +21,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-ALLOWED_IPS = [ip_address('192.168.1.0'), ip_address('172.16.0.0'), ip_address("127.0.0.1")]
+ALLOWED_IPS = [
+    ip_address("127.0.0.1")
+]
+
+ALLOWED_NETWORKS = [
+    ip_network('192.168.0.0/16'),
+    ip_network('172.16.0.0/12')
+]
 
 @app.middleware("http")
 async def limit_access_by_ip(request: Request, call_next: Callable):
     ip = ip_address(request.client.host)
-    if ip not in ALLOWED_IPS:
+
+    allowed = ip in ALLOWED_IPS
+
+    allowed = allowed or any(ip in network for network in ALLOWED_NETWORKS)
+
+    if not allowed:
         return JSONResponse(status_code=status.HTTP_403_FORBIDDEN, content={"detail": "Not allowed IP address"})
     response = await call_next(request)
     return response
