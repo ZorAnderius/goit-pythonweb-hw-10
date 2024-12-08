@@ -19,6 +19,7 @@ libgravatar = "^1.0.4"
 pydantic-settings = "^2.6.1"
 slowapi = "^0.1.9"
 fastapi-mail = "^1.4.2"
+cloudinary = "^1.41.0"
 
 
 [build-system]

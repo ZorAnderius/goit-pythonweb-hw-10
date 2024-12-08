@@ -40,3 +40,10 @@ class UsersRepository:
         user = await self.get_user_by_email(email)
         user.confirmed = True
         await self.session.commit()
+
+    async def update_avatar_url(self, email: EmailStr | str, url: str) -> User:
+        user = await self.get_user_by_email(email)
+        user.avatar = url
+        await self.session.commit()
+        await self.session.refresh(user)
+        return user
